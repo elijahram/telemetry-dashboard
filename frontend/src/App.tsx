@@ -19,15 +19,15 @@ const App = () => {
   const [telemetryData, setTelemetryData] = useState<TelemetryRow[]>([]);
 
   useEffect(() => {
-    fetchSensorSummary()
-      .then((data) => setSummaries(data))
-      .catch((err) => console.error("Error fetching summaries:", err));
-    fetchAnomalies()
-      .then((data) => setAnomalies(data))
-      .catch((err) => console.error("Error fetching anomalies:", err));
-    fetchTelemetryData()
-      .then((data) => setTelemetryData(data))
-      .catch((err) => console.error("Error fetching telemetry data:", err));
+    Promise.all([fetchSensorSummary(), fetchAnomalies(), fetchTelemetryData()])
+      .then(([summaries, anomalies, telemetryData]) => {
+        setSummaries(summaries);
+        setAnomalies(anomalies);
+        setTelemetryData(telemetryData);
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+      });
   }, []);
 
   return (
@@ -41,14 +41,15 @@ const App = () => {
       <div>
         <h1>Anomalies</h1>
         {anomalies.map((anomaly) => (
-          <AnomalyTable key={anomaly.sensor} data={anomaly} />
+          <AnomalyTable
+            key={`${anomaly.sensor}-${anomaly.timestamp}`}
+            data={anomaly}
+          />
         ))}
       </div>
       <div>
         <h1>Telemetry Data</h1>
-        {telemetryData.map((data) => (
-          <TelemetryChart key={data.timestamp} data={data} />
-        ))}
+        <TelemetryChart data={telemetryData} anomalies={anomalies} />
       </div>
     </div>
   );
