@@ -40,12 +40,7 @@ const App = () => {
       </div>
       <div>
         <h1>Anomalies</h1>
-        {anomalies.map((anomaly) => (
-          <AnomalyTable
-            key={`${anomaly.sensor}-${anomaly.timestamp}`}
-            data={anomaly}
-          />
-        ))}
+        <AnomalyTable data={anomalies} />
       </div>
       <div>
         <h1>Telemetry Data</h1>
