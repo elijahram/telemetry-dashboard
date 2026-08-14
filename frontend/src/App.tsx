@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SummaryCard from "./components/SensorSummary/SummaryCard";
+import SummaryCards from "./components/SensorSummary/SummaryCards";
 import AnomalyTable from "./components/Anomaly/AnomalyTable";
 import TelemetryChart from "./components/TelemetryData/TelemetryChart";
 import type {
@@ -31,19 +31,21 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Telemetry Dashboard</h1>
-      <div>
-        {summaries.map((summary) => (
-          <SummaryCard key={summary.sensor} data={summary} />
-        ))}
+    <div className="min-h-screen bg-gray-50 p-8">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-8">
+        Telemetry Dashboard
+      </h1>
+      <div className="mb-8">
+        <SummaryCards data={summaries} />
       </div>
-      <div>
-        <h1>Anomalies</h1>
+      <div className="mb-8 bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">Anomalies</h2>
         <AnomalyTable data={anomalies} />
       </div>
-      <div>
-        <h1>Telemetry Data</h1>
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Telemetry Data
+        </h2>
         <TelemetryChart data={telemetryData} anomalies={anomalies} />
       </div>
     </div>
