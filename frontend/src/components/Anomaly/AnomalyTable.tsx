@@ -1,35 +1,71 @@
 import type { AnomalyRow } from "../../types/telemetry";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableCell,
+  TableRow,
+  TableHead,
+} from "../ui/table";
 
 interface AnomalyTableProps {
   data: AnomalyRow[];
 }
 
+const ANOMALY_SENSOR_COLOR = "text-red-500 font-semibold";
+
 const AnomalyTable = ({ data }: AnomalyTableProps) => {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Timestamp</th>
-          <th>Sensor</th>
-          <th>Temperature</th>
-          <th>Pressure</th>
-          <th>Voltage</th>
-          <th>Battery</th>
-        </tr>
-      </thead>
-      <tbody>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Timestamp</TableHead>
+          <TableHead>Sensor</TableHead>
+          <TableHead>Temperature</TableHead>
+          <TableHead>Pressure</TableHead>
+          <TableHead>Voltage</TableHead>
+          <TableHead>Battery</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
         {data.map((anomaly) => (
-          <tr key={`${anomaly.sensor}-${anomaly.timestamp}`}>
-            <td>{anomaly.timestamp}</td>
-            <td style={{ color: "red" }}>{anomaly.sensor}</td>
-            <td>{anomaly.temperature}</td>
-            <td>{anomaly.pressure}</td>
-            <td>{anomaly.voltage}</td>
-            <td>{anomaly.battery}</td>
-          </tr>
+          <TableRow key={`${anomaly.sensor}-${anomaly.timestamp}`}>
+            <TableCell>{anomaly.timestamp}</TableCell>
+            <TableCell className={ANOMALY_SENSOR_COLOR}>
+              {anomaly.sensor}
+            </TableCell>
+            <TableCell
+              className={
+                anomaly.sensor === "temperature" ? ANOMALY_SENSOR_COLOR : ""
+              }
+            >
+              {anomaly.temperature}
+            </TableCell>
+            <TableCell
+              className={
+                anomaly.sensor === "pressure" ? ANOMALY_SENSOR_COLOR : ""
+              }
+            >
+              {anomaly.pressure}
+            </TableCell>
+            <TableCell
+              className={
+                anomaly.sensor === "voltage" ? ANOMALY_SENSOR_COLOR : ""
+              }
+            >
+              {anomaly.voltage}
+            </TableCell>
+            <TableCell
+              className={
+                anomaly.sensor === "battery" ? ANOMALY_SENSOR_COLOR : ""
+              }
+            >
+              {anomaly.battery}
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </table>
+      </TableBody>
+    </Table>
   );
 };
 
